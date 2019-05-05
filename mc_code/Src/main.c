@@ -96,6 +96,87 @@ static void MX_I2C1_Init(void);
 #include <string.h>
 #include <stdbool.h>
 
+
+
+
+
+
+
+///******************************************************************************
+// * @file:    core_cm3.h
+// * @purpose: CMSIS Cortex-M3 Core Peripheral Access Layer Header File
+// * @version: V1.20
+// * @date:    22. May 2009
+// *----------------------------------------------------------------------------
+// *
+// * Copyright (C) 2009 ARM Limited. All rights reserved.
+// *
+// * ARM Limited (ARM) is supplying this software for use with Cortex-Mx
+// * processor based microcontrollers.  This file can be freely distributed
+// * within development tools that are supporting such ARM based processors.
+// *
+// * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+// * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+// * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+// * ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+// * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+// *
+// ******************************************************************************/
+//
+///* memory mapping struct for System Control Block */
+//typedef struct
+//{
+//  __I  uint32_t CPUID;                        /*!< CPU ID Base Register                                     */
+//  __IO uint32_t ICSR;                         /*!< Interrupt Control State Register                         */
+//  __IO uint32_t VTOR;                         /*!< Vector Table Offset Register                             */
+//  __IO uint32_t AIRCR;                        /*!< Application Interrupt / Reset Control Register           */
+//  __IO uint32_t SCR;                          /*!< System Control Register                                  */
+//  __IO uint32_t CCR;                          /*!< Configuration Control Register                           */
+//  __IO uint8_t  SHP[12];                      /*!< System Handlers Priority Registers (4-7, 8-11, 12-15)    */
+//  __IO uint32_t SHCSR;                        /*!< System Handler Control and State Register                */
+//  __IO uint32_t CFSR;                         /*!< Configurable Fault Status Register                       */
+//  __IO uint32_t HFSR;                         /*!< Hard Fault Status Register                                       */
+//  __IO uint32_t DFSR;                         /*!< Debug Fault Status Register                                          */
+//  __IO uint32_t MMFAR;                        /*!< Mem Manage Address Register                                  */
+//  __IO uint32_t BFAR;                         /*!< Bus Fault Address Register                                   */
+//  __IO uint32_t AFSR;                         /*!< Auxiliary Fault Status Register                              */
+//  __I  uint32_t PFR[2];                       /*!< Processor Feature Register                               */
+//  __I  uint32_t DFR;                          /*!< Debug Feature Register                                   */
+//  __I  uint32_t ADR;                          /*!< Auxiliary Feature Register                               */
+//  __I  uint32_t MMFR[4];                      /*!< Memory Model Feature Register                            */
+//  __I  uint32_t ISAR[5];                      /*!< ISA Feature Register                                     */
+//} SCB_Type;
+//
+//#define SCS_BASE            (0xE000E000)                              /*!< System Control Space Base Address    */
+//#define SCB_BASE            (SCS_BASE +  0x0D00)                      /*!< System Control Block Base Address    */
+//#define SCB                 ((SCB_Type *)           SCB_BASE)         /*!< SCB configuration struct             */
+//
+//#define NVIC_AIRCR_VECTKEY    (0x5FA << 16)   /*!< AIRCR Key for write access   */
+//#define NVIC_SYSRESETREQ            2         /*!< System Reset Request         */
+//
+///* ##################################    Reset function  ############################################ */
+///**
+// * @brief  Initiate a system reset request.
+// *
+// * @param   none
+// * @return  none
+// *
+// * Initialize a system reset request to reset the MCU
+// */
+//static __INLINE void NVIC_SystemReset(void)
+//{
+//  SCB->AIRCR  = (NVIC_AIRCR_VECTKEY | (SCB->AIRCR & (0x700)) | (1<<NVIC_SYSRESETREQ)); /* Keep priority group unchanged */
+//  __DSB();                                                                                 /* Ensure completion of memory access */
+//  while(1);                                                                                /* wait until reset */
+//}
+
+
+
+
+
+
+
+
 void vprint(const char *fmt, va_list argp)
 {
     char string[200];
@@ -117,9 +198,9 @@ void my_printf(const char *fmt, ...) // custom printf() function
 
 
 
-bool nunchuck_connected(uint32_t xferOptions)
+bool nunchuck_connected(uint32_t xferOptions, uint32_t error_code)
 {
-	if (xferOptions == 0)
+	if (xferOptions == 0 || error_code != 0)
 		return false;
 	else
 		return true;
@@ -132,6 +213,11 @@ bool nunchuck_connected(uint32_t xferOptions)
 
 int main(void)
 {
+
+
+//	SCB->AIRCR = 0x05fa0004;    // System RESET!!
+
+//	NVIC_SystemReset();
 
 	uint16_t year = 2015;
 	uint8_t month = 12;
@@ -195,7 +281,7 @@ int main(void)
 
 
 
-	  while(nunchuck_connected(hi2c1.XferOptions) == false)
+	  while(nunchuck_connected(hi2c1.XferOptions, hi2c1.ErrorCode) == false)
 	  {
 		  //set mode of nunchuck
 		  uint8_t init_data[6];
