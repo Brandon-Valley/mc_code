@@ -179,6 +179,7 @@ int main(void)
 //  HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
 
 
+  int buttonZ = 0;
 
   while (1)
   {
@@ -187,6 +188,13 @@ int main(void)
 	  HAL_UART_Transmit(&huart2, msg1, strlen((char*)msg1), 5) ;
 	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, buf, 1, 100);
 	  HAL_I2C_Master_Receive (&hi2c1, NUNCHUCK_ADDRESS, data, 6, 100);
+
+      if(data[5] & 0x01) {
+          buttonZ = 0;
+      } else {
+          buttonZ = 1;
+      }
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
