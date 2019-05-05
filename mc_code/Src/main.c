@@ -41,6 +41,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include <stdbool.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -95,6 +96,19 @@ static void MX_TIM8_Init(void);
   * @retval int
   */
 
+
+
+
+bool nunchuck_connected(uint32_t xferOptions, uint32_t error_code)
+{
+	if (xferOptions == 0 || error_code != 0)
+		return false;
+	else
+		return true;
+}
+
+
+
 #define NUNCHUCK_ADDRESS  0xA4
 
 
@@ -139,6 +153,41 @@ int main(void)
 //  HAL_TIM_PWM_Stop(&htim8, 2);
 
 
+
+
+
+
+  while(nunchuck_connected(hi2c1.XferOptions, hi2c1.ErrorCode) == false)
+  {
+	  //set mode of nunchuck
+	  uint8_t init_data[6];
+	  init_data[0] = 0xF0;
+	  init_data[1] = 0x55;
+	//  twi_send_msg(&TWID, NUNCHUCK, &init_data[0], 2);
+	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 2, 100);
+	  init_data[0] = 0xFB;
+	  init_data[1] = 0x00;
+	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 2, 100);
+	//  twi_send_msg(&TWID, NUNCHUCK, &init_data[0], 2);
+//	  init_data[0] = 0x00;
+//	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 1, 100);
+
+
+
+	  wait(10);
+
+//	  unsigned char cmd[] = {NUNCHUCK_REGADDR, 0x00};
+//	  uint8_t read_data[6] = {0,0,0,0,0,0};
+//	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_REGADDR, cmd, 1, 100);
+//	  HAL_I2C_Master_Receive (&hi2c1, NUNCHUCK_REGADDR, read_data, 6, 100);
+//
+//	  wait(10);
+  }
+
+
+
+
+
   /* USER CODE END 2 */
 
 
@@ -153,24 +202,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
 
-
-
-  //set mode of nunchuck
-  uint8_t init_data[6];
-  init_data[0] = 0xF0;
-  init_data[1] = 0x55;
-//  twi_send_msg(&TWID, NUNCHUCK, &init_data[0], 2);
-  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 2, 100);
-  init_data[0] = 0xFB;
-  init_data[1] = 0x00;
-  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 2, 100);
-//  twi_send_msg(&TWID, NUNCHUCK, &init_data[0], 2);
-//	  init_data[0] = 0x00;
-//	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 1, 100);
-
-  wait(10);
-
-
   //read from nunchuck
   uint8_t data[6];
   uint8_t buf[] = {0};
@@ -178,12 +209,19 @@ int main(void)
 //  HAL_I2C_Master_Transmit(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
 //  HAL_I2C_Master_Receive(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t Timeout);
 
-
+  bool connected;
+  volatile uint32_t c = 5;
   int buttonZ = 0;
 
-  while (1)
+
+  while(1)
   {
-    /* USER CODE END WHILE */
+	  if (true)
+		  connected = 1;
+	  else
+		  connected = 1;
+
+	  c = hi2c1.XferOptions;
 	  uint8_t msg1[] = "ABCCC";
 	  HAL_UART_Transmit(&huart2, msg1, strlen((char*)msg1), 5) ;
 	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, buf, 1, 100);
@@ -195,8 +233,26 @@ int main(void)
           buttonZ = 1;
       }
 
-    /* USER CODE BEGIN 3 */
   }
+
+//  int buttonZ = 0;
+//
+//  while (1)
+//  {
+//    /* USER CODE END WHILE */
+//	  uint8_t msg1[] = "ABCCC";
+//	  HAL_UART_Transmit(&huart2, msg1, strlen((char*)msg1), 5) ;
+//	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, buf, 1, 100);
+//	  HAL_I2C_Master_Receive (&hi2c1, NUNCHUCK_ADDRESS, data, 6, 100);
+//
+//      if(data[5] & 0x01) {
+//          buttonZ = 0;
+//      } else {
+//          buttonZ = 1;
+//      }
+
+    /* USER CODE BEGIN 3 */
+//  }
   /* USER CODE END 3 */
 }
 
