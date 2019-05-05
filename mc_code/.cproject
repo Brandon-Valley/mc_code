@@ -43,6 +43,9 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/include"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.symbols.defined.1670122205" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__weak=__attribute__((weak))"/>
@@ -110,8 +113,12 @@
 							<option id="com.atollic.truestudio.general.runtimelib.162643855.889286118" name="Runtime Library" superClass="com.atollic.truestudio.general.runtimelib.162643855"/>
 							<option id="com.atollic.truestudio.toolchain_options.mcu.1931455364.1842072359" name="Microcontroller" superClass="com.atollic.truestudio.toolchain_options.mcu.1931455364"/>
 							<option id="com.atollic.truestudio.toolchain_options.vendor.1211345895.1651793803" name="Vendor name" superClass="com.atollic.truestudio.toolchain_options.vendor.1211345895"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.as.964558035" name="Assembler" superClass="com.atollic.truestudio.exe.debug.toolchain.as.1545899283"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.gcc.651949645" name="C Compiler" superClass="com.atollic.truestudio.exe.debug.toolchain.gcc.1836874447"/>
+							<tool id="com.atollic.truestudio.exe.debug.toolchain.as.964558035" name="Assembler" superClass="com.atollic.truestudio.exe.debug.toolchain.as.1545899283">
+								<inputType id="com.atollic.truestudio.as.input.198992168" name="Input" superClass="com.atollic.truestudio.as.input"/>
+							</tool>
+							<tool id="com.atollic.truestudio.exe.debug.toolchain.gcc.651949645" name="C Compiler" superClass="com.atollic.truestudio.exe.debug.toolchain.gcc.1836874447">
+								<inputType id="com.atollic.truestudio.gcc.input.2063529744" superClass="com.atollic.truestudio.gcc.input"/>
+							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ld.1650275696" name="C Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ld.1444973427"/>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.gpp.451580793" name="C++ Compiler" superClass="com.atollic.truestudio.exe.debug.toolchain.gpp.981298185"/>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ldcc.96155174" name="C++ Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ldcc.428260"/>
@@ -125,6 +132,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
+						<entry excluding="CMSIS" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry excluding="CMSIS" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
@@ -178,6 +186,9 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/include"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"/>
+									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
 								</option>
 								<option id="com.atollic.truestudio.gcc.symbols.defined.1670122205" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__weak=__attribute__((weak))"/>
@@ -246,6 +257,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
+						<entry excluding="CMSIS" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
@@ -263,7 +275,7 @@
 	</storageModule>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/mc_code"/>
+			<resource resourceType="PROJECT" workspacePath="mc_code"/>
 		</configuration>
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/mc_code"/>
