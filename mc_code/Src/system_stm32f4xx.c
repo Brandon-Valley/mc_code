@@ -3,7 +3,7 @@
   * @file    system_stm32f4xx.c
   * @author  MCD Application Team
   * @brief   - CMSIS Cortex-M4 Device Peripheral Access Layer System Source File.
-  *          - This file is dedicated only for STM32F446 NUCLEO 144 boards.
+  *          - This file is dedicated only for STM32F429 NUCLEO 144 boards.
   *
   *   This file provides two functions and one global variable to be called from 
   *   user application:
