@@ -243,6 +243,7 @@ int main(void)
 
   int buttonZ = 0;
 
+  bool btn_Z = 0;
 
   while(1)
   {
@@ -252,9 +253,13 @@ int main(void)
 	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, buf, 1, 100);
 	  HAL_I2C_Master_Receive (&hi2c1, NUNCHUCK_ADDRESS, data, 6, 100);
 
+	  buttonZ = data[5] & 0x01;
+	  btn_Z = data[5] & 0x01;
       if(data[5] & 0x01) {
+    	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,0);
           buttonZ = 0;
       } else {
+    	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 1);
           buttonZ = 1;
       }
 
