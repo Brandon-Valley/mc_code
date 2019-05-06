@@ -195,10 +195,10 @@ int main(void)
 
 
 
-//  HAL_TIM_Base_Start_IT(&htim8);
-  HAL_TIM_PWM_Start(&htim8, 0);
-  HAL_TIM_PWM_Start(&htim8, 1);
-  HAL_TIM_PWM_Start(&htim8, 2);
+////  HAL_TIM_Base_Start_IT(&htim8);
+//  HAL_TIM_PWM_Start(&htim8, 0);
+//  HAL_TIM_PWM_Start(&htim8, 1);
+//  HAL_TIM_PWM_Start(&htim8, 2);
 
 //  //stop pwm
 //  HAL_TIM_PWM_Stop(&htim8, 0);
@@ -258,9 +258,19 @@ int main(void)
       if(data[5] & 0x01) {
     	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,0);
           buttonZ = 0;
+          //  //stop pwm
+            HAL_TIM_PWM_Stop(&htim8, 0);
+            HAL_TIM_PWM_Stop(&htim8, 1);
+            HAL_TIM_PWM_Stop(&htim8, 2);
+
       } else {
     	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 1);
           buttonZ = 1;
+
+          //  HAL_TIM_Base_Start_IT(&htim8);
+            HAL_TIM_PWM_Start(&htim8, 0);
+            HAL_TIM_PWM_Start(&htim8, 1);
+            HAL_TIM_PWM_Start(&htim8, 2);
       }
 
   }
