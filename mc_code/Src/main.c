@@ -169,18 +169,21 @@ int main(void)
 
 
 
+  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 1);
+  HAL_Delay(1000); //Delay 1 Seconds
+  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 0);
 
-  while (1)
-  {
-
-  /* USER CODE END WHILE */
-	//Ld2 pin refers to "PA5" pin, which is D13 pin to which led is connected
-	HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin); //Toggle LED
-
-	HAL_Delay(1000); //Delay 1 Seconds
-  /* USER CODE BEGIN 3 */
-
-  }
+//  while (1)
+//  {
+//
+//  /* USER CODE END WHILE */
+//	//Ld2 pin refers to "PA5" pin, which is D13 pin to which led is connected
+//	HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin); //Toggle LED
+//
+//	HAL_Delay(10); //Delay 1 Seconds
+//  /* USER CODE BEGIN 3 */
+//
+//  }
 
 
 
