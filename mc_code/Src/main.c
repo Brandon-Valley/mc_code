@@ -110,10 +110,32 @@ bool nunchuck_connected(uint32_t xferOptions, uint32_t error_code)
 
 
 #define NUNCHUCK_ADDRESS  0xA4
-
+#define LED_RED_1_Pin GPIO_PIN_5
+#define LED_RED_1_GPIO_Port GPIOC
 
 int main(void)
 {
+
+
+
+
+
+
+
+//	HAL_GPIO_TogglePin(LED_RED_1_GPIO_Port,LED_RED_1_Pin); //Toggle LED
+
+//	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+//	wait(10);
+//
+//	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+//	wait(10);
+//
+//	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+//	wait(10);
+//
+//	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+//	wait(10);
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -141,6 +163,34 @@ int main(void)
   MX_TIM8_Init();
 
   /* USER CODE BEGIN 2 */
+
+
+
+
+
+
+
+  while (1)
+  {
+
+  /* USER CODE END WHILE */
+	//Ld2 pin refers to "PA5" pin, which is D13 pin to which led is connected
+	HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin); //Toggle LED
+
+	HAL_Delay(1000); //Delay 1 Seconds
+  /* USER CODE BEGIN 3 */
+
+  }
+
+
+
+
+
+
+
+
+
+
 
 //  HAL_TIM_Base_Start_IT(&htim8);
   HAL_TIM_PWM_Start(&htim8, 0);
