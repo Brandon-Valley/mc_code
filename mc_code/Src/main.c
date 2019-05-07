@@ -55,7 +55,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NUNCHUCK_ADDRESS  0xA4
+
 
 #define USING_MY_BOARD 0 // 0 = using Nucleo board
 
@@ -68,6 +68,7 @@
 #endif
 
 
+#define NUNCHUCK_ADDRESS  0xA4
 
 
 /* USER CODE END PD */
@@ -100,7 +101,6 @@ static void MX_TIM1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 bool nunchuck_connected(uint32_t xferOptions, uint32_t error_code)
 {
 	if (xferOptions == 0 || error_code != 0)
@@ -108,7 +108,6 @@ bool nunchuck_connected(uint32_t xferOptions, uint32_t error_code)
 	else
 		return true;
 }
-
 /* USER CODE END 0 */
 
 /**
@@ -144,7 +143,11 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
+  //Set EN_GATE high to enable Mosfet Driver
+  HAL_GPIO_WritePin(EN_GATE_GPIO_Port,EN_GATE_Pin, 1);
 
+
+  //blink LED once for just to show that everything is working
   HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 1);
   HAL_Delay(1000); //Delay 1 Seconds
   HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 0);
@@ -164,17 +167,9 @@ int main(void)
 	  init_data[1] = 0x00;
 	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, init_data, 2, 100);
 
-
 	  wait(10);
-
-
   }
 
-
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
 
 
   //read from nunchuck
@@ -186,38 +181,46 @@ int main(void)
 
   bool btn_Z = 0;
 
+
   while(1)
-  {
+    {
 
-	  uint8_t msg1[] = "ABCCC";
-	  HAL_UART_Transmit(&huart2, msg1, strlen((char*)msg1), 5) ;
-	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, buf, 1, 100);
-	  HAL_I2C_Master_Receive (&hi2c1, NUNCHUCK_ADDRESS, data, 6, 100);
+  	  uint8_t msg1[] = "ABCCC";
+  	  HAL_UART_Transmit(&huart2, msg1, strlen((char*)msg1), 5) ;
+  	  HAL_I2C_Master_Transmit(&hi2c1, NUNCHUCK_ADDRESS, buf, 1, 100);
+  	  HAL_I2C_Master_Receive (&hi2c1, NUNCHUCK_ADDRESS, data, 6, 100);
 
-	  buttonZ = data[5] & 0x01;
-	  btn_Z = data[5] & 0x01;
-      if(data[5] & 0x01) {
-    	  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN,0);
-          buttonZ = 0;
-          //  //stop pwm
-            HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
-            HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
-            HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
+  	  buttonZ = data[5] & 0x01;
+  	  btn_Z = data[5] & 0x01;
+        if(data[5] & 0x01) {
+      	  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN,0);
+            buttonZ = 0;
+            //  //stop pwm
+              HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+              HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
+              HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_3);
 
-      } else {
-    	  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 1);
-          buttonZ = 1;
+        } else {
+      	  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 1);
+            buttonZ = 1;
 
-          //  HAL_TIM_Base_Start_IT(&htim8);
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-            HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
-      }
-  }
+            //  HAL_TIM_Base_Start_IT(&htim8);
+              HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+              HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+              HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+        }
+    }
 
-    /* USER CODE END WHILE */
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+
+
+  /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
   /* USER CODE END 3 */
 }
 
@@ -375,6 +378,7 @@ static void MX_TIM1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM1_Init 2 */
+
   /* USER CODE END TIM1_Init 2 */
   HAL_TIM_MspPostInit(&htim1);
 
@@ -431,6 +435,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(EN_GATE_GPIO_Port, EN_GATE_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
@@ -443,6 +450,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : EN_GATE_Pin */
+  GPIO_InitStruct.Pin = EN_GATE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(EN_GATE_GPIO_Port, &GPIO_InitStruct);
 
 }
 
