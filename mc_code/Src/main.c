@@ -57,13 +57,13 @@
 /* USER CODE BEGIN PD */
 
 
-#define USING_MY_BOARD 0 // 0 = using Nucleo board
+#define USING_MY_BOARD 1 // 0 = using Nucleo board
 
 #if USING_MY_BOARD == 0
 #define Z_BTN_STATUS_LED_PIN  LD2_Pin
 #define Z_BTN_STATUS_LED_PORT LD2_GPIO_Port
 #else
-#define Z_BTN_STATUS_LED_PIN  GPIO_PIN_5
+#define Z_BTN_STATUS_LED_PIN  MB_Z_BTN_STATUS_LED_Pin
 #define Z_BTN_STATUS_LED_PORT GPIOC
 #endif
 
@@ -143,14 +143,14 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
-  //Set EN_GATE high to enable Mosfet Driver
-  HAL_GPIO_WritePin(EN_GATE_GPIO_Port,EN_GATE_Pin, 1);
-
-
   //blink LED once for just to show that everything is working
   HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 1);
   HAL_Delay(1000); //Delay 1 Seconds
   HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 0);
+
+
+  //Set EN_GATE high to enable Mosfet Driver
+  HAL_GPIO_WritePin(EN_GATE_GPIO_Port,EN_GATE_Pin, 1);
 
 
   //keep trying to connect to nunchuck, stay in this loop until you do,
@@ -451,12 +451,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : EN_GATE_Pin */
-  GPIO_InitStruct.Pin = EN_GATE_Pin;
+  /*Configure GPIO pins : MB_Z_BTN_STATUS_LED_Pin EN_GATE_Pin */
+  GPIO_InitStruct.Pin = MB_Z_BTN_STATUS_LED_Pin|EN_GATE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(EN_GATE_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 }
 
