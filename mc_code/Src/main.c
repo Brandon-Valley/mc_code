@@ -60,7 +60,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define USING_MY_BOARD 0 // 0 = using Nucleo board
+#define USING_MY_BOARD 1 // 0 = using Nucleo board
 
 #if USING_MY_BOARD == 0
 #define Z_BTN_STATUS_LED_PIN  LD2_Pin
@@ -188,6 +188,8 @@ int main(void)
   HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 0);
 
 
+  //keep trying to connect to nunchuck, stay in this loop until you do,
+  //if you cant get out of this loop, unplug, replug, debug, press S button to connect nunchuck
   while(nunchuck_connected(hi2c1.XferOptions, hi2c1.ErrorCode) == false)
   {
 	  //set mode of nunchuck
@@ -234,7 +236,7 @@ int main(void)
 	  buttonZ = data[5] & 0x01;
 	  btn_Z = data[5] & 0x01;
       if(data[5] & 0x01) {
-    	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,0);
+    	  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN,0);
           buttonZ = 0;
           //  //stop pwm
 //            HAL_TIM_PWM_Stop(&htim8, 0);
@@ -242,7 +244,7 @@ int main(void)
 //            HAL_TIM_PWM_Stop(&htim8, 2);
 
       } else {
-    	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 1);
+    	  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 1);
           buttonZ = 1;
 
           //  HAL_TIM_Base_Start_IT(&htim8);
