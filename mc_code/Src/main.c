@@ -41,10 +41,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include <stdbool.h>
+
+
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include <stdbool.h>
 
 /* USER CODE END Includes */
 
@@ -55,6 +59,19 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define USING_MY_BOARD 0 // 0 = using Nucleo board
+
+#if USING_MY_BOARD == 0
+#define Z_BTN_STATUS_LED_PIN  LD2_Pin
+#define Z_BTN_STATUS_LED_PORT LD2_GPIO_Port
+#else
+#define Z_BTN_STATUS_LED_PIN  GPIO_PIN_5
+#define Z_BTN_STATUS_LED_PORT GPIOC
+#endif
+
+
+
 
 /* USER CODE END PD */
 
@@ -110,8 +127,9 @@ bool nunchuck_connected(uint32_t xferOptions, uint32_t error_code)
 
 
 #define NUNCHUCK_ADDRESS  0xA4
-#define LED_RED_1_Pin GPIO_PIN_5
-#define LED_RED_1_GPIO_Port GPIOC
+
+
+
 
 int main(void)
 {
@@ -165,49 +183,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 
-
-
-
-
-  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 1);
+  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 1);
   HAL_Delay(1000); //Delay 1 Seconds
-  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 0);
-
-//  while (1)
-//  {
-//
-//  /* USER CODE END WHILE */
-//	//Ld2 pin refers to "PA5" pin, which is D13 pin to which led is connected
-//	HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin); //Toggle LED
-//
-//	HAL_Delay(10); //Delay 1 Seconds
-//  /* USER CODE BEGIN 3 */
-//
-//  }
-
-
-
-
-
-
-
-
-
-
-
-////  HAL_TIM_Base_Start_IT(&htim8);
-//  HAL_TIM_PWM_Start(&htim8, 0);
-//  HAL_TIM_PWM_Start(&htim8, 1);
-//  HAL_TIM_PWM_Start(&htim8, 2);
-
-//  //stop pwm
-//  HAL_TIM_PWM_Stop(&htim8, 0);
-//  HAL_TIM_PWM_Stop(&htim8, 1);
-//  HAL_TIM_PWM_Stop(&htim8, 2);
-
-
-
-
+  HAL_GPIO_WritePin(Z_BTN_STATUS_LED_PORT,Z_BTN_STATUS_LED_PIN, 0);
 
 
   while(nunchuck_connected(hi2c1.XferOptions, hi2c1.ErrorCode) == false)
@@ -259,18 +237,18 @@ int main(void)
     	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,0);
           buttonZ = 0;
           //  //stop pwm
-            HAL_TIM_PWM_Stop(&htim8, 0);
-            HAL_TIM_PWM_Stop(&htim8, 1);
-            HAL_TIM_PWM_Stop(&htim8, 2);
+//            HAL_TIM_PWM_Stop(&htim8, 0);
+//            HAL_TIM_PWM_Stop(&htim8, 1);
+//            HAL_TIM_PWM_Stop(&htim8, 2);
 
       } else {
     	  HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin, 1);
           buttonZ = 1;
 
           //  HAL_TIM_Base_Start_IT(&htim8);
-            HAL_TIM_PWM_Start(&htim8, 0);
-            HAL_TIM_PWM_Start(&htim8, 1);
-            HAL_TIM_PWM_Start(&htim8, 2);
+//            HAL_TIM_PWM_Start(&htim8, 0);
+//            HAL_TIM_PWM_Start(&htim8, 1);
+//            HAL_TIM_PWM_Start(&htim8, 2);
       }
 
   }
@@ -498,11 +476,11 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  GPIO_InitStruct.Pin = Z_BTN_STATUS_LED_PIN;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(Z_BTN_STATUS_LED_PORT, &GPIO_InitStruct);
 
 }
 
