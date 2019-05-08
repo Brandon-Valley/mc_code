@@ -155,6 +155,9 @@ int main(void)
 
 
   // remove !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  HAL_GPIO_WritePin(GPIOA,ch1___test_out_Pin, 1);
+  HAL_GPIO_WritePin(GPIOA,ch1_N_test_out_Pin, 0);
+
   HAL_TIM_PWM_Start   (&htim1, TIM_CHANNEL_1);
   HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start   (&htim1, TIM_CHANNEL_2);
