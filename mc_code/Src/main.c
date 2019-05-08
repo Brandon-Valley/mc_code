@@ -57,7 +57,7 @@
 /* USER CODE BEGIN PD */
 
 
-#define USING_MY_BOARD 1 // 0 = using Nucleo board
+#define USING_MY_BOARD 0 // 0 = using Nucleo board
 
 #if USING_MY_BOARD == 0
 #define Z_BTN_STATUS_LED_PIN  LD2_Pin
@@ -151,6 +151,15 @@ int main(void)
 
   //Set EN_GATE high to enable Mosfet Driver
   HAL_GPIO_WritePin(EN_GATE_GPIO_Port,EN_GATE_Pin, 1);
+
+
+
+  // remove !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+
+
 
 
   //keep trying to connect to nunchuck, stay in this loop until you do,
@@ -350,7 +359,7 @@ static void MX_TIM1_Init(void)
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 500;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_LOW;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
