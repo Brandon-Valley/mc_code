@@ -57,7 +57,7 @@
 /* USER CODE BEGIN PD */
 
 
-#define USING_MY_BOARD 0 // 0 = using Nucleo board
+#define USING_MY_BOARD 1 // 0 = using Nucleo board
 
 #if USING_MY_BOARD == 0
 #define Z_BTN_STATUS_LED_PIN  LD2_Pin
